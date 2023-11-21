@@ -9,6 +9,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,9 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent)
+                  .copyWith(background: Color.fromRGBO(255, 229, 153, 1))),
           home: ListaTarefas(),
         ));
   }

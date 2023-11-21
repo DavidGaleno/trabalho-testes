@@ -29,26 +29,31 @@ class ListaTarefas extends StatelessWidget {
       body: Consumer<TarefasProvider>(
         builder: (_, provider, child) => Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Form(
                 child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 200,
+                  width: 500,
                   child: TextFormField(
+                    maxLength: 60,
                     controller: tarefaController,
                     keyboardType: TextInputType.text,
                     decoration:
                         InputDecoration(label: Text('Insira o nome da tarefa')),
                   ),
                 ),
-                TextButton(
-                    onPressed: () {
-                      adicionarItem(
-                          provider: provider, text: tarefaController.text);
-                    },
-                    child: Text('Adicionar'))
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: TextButton(
+                      onPressed: () {
+                        adicionarItem(
+                            provider: provider, text: tarefaController.text);
+                      },
+                      child: Text('Adicionar')),
+                )
               ],
             )),
             Expanded(
@@ -57,11 +62,7 @@ class ListaTarefas extends StatelessWidget {
                   itemCount: provider.tarefas.length,
                   itemBuilder: (context, index) {
                     Tarefa tarefa = provider.tarefas[index];
-                    return ListTile(
-                      title: TarefaItem(
-                          tarefa: tarefa,
-                          provider: provider),
-                    );
+                    return TarefaItem(tarefa: tarefa, provider: provider);
                   }),
             ),
           ],

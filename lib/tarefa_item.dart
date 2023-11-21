@@ -25,32 +25,33 @@ class TarefaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text('${tarefa.titulo}'),
-        Text('${tarefa.concluida ? 'concluída' : 'incompleta'}'),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () {
-                removerTarefa();
-              },
-              icon: Icon(Icons.highlight_remove_outlined),
-            ),
-            IconButton(
-                onPressed: () {
-                  concluirTarefa();
-                },
-                icon: Icon(tarefa.concluida
-                    ? Icons.circle_rounded
-                    : Icons.circle_outlined))
-          ],
-        )
-      ],
+    return Center(
+      child: SizedBox(
+        width: 500,
+        child: ListTile(
+          title: Text(tarefa.titulo),
+          subtitle: Text(tarefa.concluida ? 'Concluída' : 'A Fazer'),
+          leading: Icon(Icons.task),
+          iconColor: Colors.black,
+          trailing: Wrap(
+            children: [
+              IconButton(
+                  onPressed: () {
+                    removerTarefa();
+                  },
+                  icon: Icon(Icons.highlight_remove_outlined)),
+              IconButton(
+                  onPressed: () {
+                    concluirTarefa();
+                  },
+                  icon: Icon(tarefa.concluida
+                      ? Icons.circle_rounded
+                      : Icons.circle_outlined))
+            ],
+          ),
+          tileColor: Colors.white,
+        ),
+      ),
     );
   }
 }
