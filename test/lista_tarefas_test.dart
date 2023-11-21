@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:tarefas/lista_tarefas.dart';
 import 'package:tarefas/models/tarefa.dart';
 import 'package:tarefas/tarefaProvider.dart';
+import 'package:tarefas/tarefa_form.dart';
 import 'package:tarefas/tarefa_item.dart';
 
 import 'lista_tarefas_test.mocks.dart';
@@ -81,12 +82,11 @@ void main() {
 
       //Espera que a largura antiga seja maior que a atual
       expect(larguraAntiga, greaterThan(provider.tarefas.length));
-
     });
     test('Espera que concluir tarefas mude o valor do atributo concluida', () {
-
       final provider = MockTarefasProvider();
-      when(provider.tarefas).thenReturn([Tarefa(id: 1, titulo: 'Nova Tarefa', concluida: false)]);
+      when(provider.tarefas)
+          .thenReturn([Tarefa(id: 1, titulo: 'Nova Tarefa', concluida: false)]);
 
       //Pega a tarefa armazenada
       Tarefa tarefa = provider.tarefas[0];
@@ -128,11 +128,36 @@ void main() {
 
       expect(find.byType(ListaTarefas), findsOneWidget);
     });
+  });
 
+  group('TarefaForm', () {
+    testWidgets(
+        'Espera que o form seja renderizado quando a view for carregada',
+        (WidgetTester tester) async {
+      final provider = MockTarefasProvider();
+      when(provider.tarefas)
+          .thenReturn([Tarefa(id: 1, titulo: 'teste', concluida: false)]);
+
+      await tester.pumpWidget(MultiProvider(
+          providers: [
+            ChangeNotifierProvider<TarefasProvider>(
+                create: (context) => provider)
+          ],
+          child: MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            home: ListaTarefas(),
+          )));
+
+      expect(find.byType(TarefaForm), findsOneWidget);
+    });
     testWidgets(
         'Espera que o número de tarefas no provider aumente quando adicionar uma tarefa',
         (WidgetTester tester) async {
-      final listaTarefas = ListaTarefas();
+      final tarefaForm = TarefaForm();
 
       final provider = MockTarefasProvider();
       when(provider.tarefas).thenReturn([]);
@@ -141,7 +166,7 @@ void main() {
       int larguraAntiga = provider.tarefas.length;
 
       //Adiciona uma tarefa no provider
-      listaTarefas.adicionarItem(provider: provider, text: 'teste');
+      tarefaForm.adicionarItem(provider: provider, text: 'teste');
 
       //Atualiza o componente
 
@@ -151,14 +176,14 @@ void main() {
     testWidgets(
         'Espera que não seja adicionada nenhuma tarefa quando o parâmetro text for vazio',
         (WidgetTester tester) async {
-      final listaTarefas = ListaTarefas();
+      final tarefaForm = TarefaForm();
 
       final provider = MockTarefasProvider();
       when(provider.tarefas).thenReturn([]);
 
       int larguraAntiga = provider.tarefas.length;
 
-      listaTarefas.adicionarItem(provider: provider, text: '');
+      tarefaForm.adicionarItem(provider: provider, text: '');
 
       expect(larguraAntiga, provider.tarefas.length);
     });
@@ -191,7 +216,6 @@ void main() {
     testWidgets(
         'Espera que o número de tarefas no provider diminua quando remover uma tarefa,',
         (WidgetTester tester) async {
-
       //Mock que retorna 1 tarefa
       final provider = MockTarefasProvider();
       when(provider.tarefas)
