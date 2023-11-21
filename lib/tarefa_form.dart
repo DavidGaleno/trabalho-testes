@@ -12,6 +12,7 @@ class TarefaForm extends StatelessWidget {
 
   adicionarItem({required provider, required text}) {
     if (text == '' || text == ' ') return;
+    if(text.length > 80) return;
     Tarefa tarefa =
         Tarefa(id: provider.tarefas.length + 1, titulo: text, concluida: false);
     provider.tarefas.add(tarefa);
@@ -30,7 +31,7 @@ class TarefaForm extends StatelessWidget {
                 SizedBox(
                   width: 500,
                   child: TextFormField(
-                    maxLength: 60,
+                    maxLength: 80,
                     controller: tarefaController,
                     keyboardType: TextInputType.text,
                     decoration:
@@ -38,13 +39,13 @@ class TarefaForm extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  padding: const EdgeInsets.only(top: 20, bottom: 30),
                   child: TextButton(
                       onPressed: () {
                         adicionarItem(
                             provider: provider, text: tarefaController.text);
                       },
-                      child: Text('Adicionar')),
+                      child: Text('Adicionar',style: TextStyle(fontSize: 18),)),
                 )
               ],
             ))));

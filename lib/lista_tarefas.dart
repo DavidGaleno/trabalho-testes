@@ -10,9 +10,6 @@ import 'models/tarefa.dart';
 class ListaTarefas extends StatelessWidget {
   ListaTarefas({super.key});
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,15 +21,19 @@ class ListaTarefas extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TarefaForm(),
-            Expanded(
-              child: ListView.builder(
-                  key: UniqueKey(),
-                  itemCount: provider.tarefas.length,
-                  itemBuilder: (context, index) {
-                    Tarefa tarefa = provider.tarefas[index];
-                    return TarefaItem(tarefa: tarefa, provider: provider);
-                  }),
-            ),
+            provider.tarefas.length == 0
+                ? Center(
+                    child: Text('Não há tarefas cadastradas',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                        key: UniqueKey(),
+                        itemCount: provider.tarefas.length,
+                        itemBuilder: (context, index) {
+                          Tarefa tarefa = provider.tarefas[index];
+                          return TarefaItem(tarefa: tarefa, provider: provider);
+                        }),
+                  ),
           ],
         ),
       ),

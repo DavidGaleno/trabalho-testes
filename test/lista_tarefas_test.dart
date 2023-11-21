@@ -187,6 +187,20 @@ void main() {
 
       expect(larguraAntiga, provider.tarefas.length);
     });
+    testWidgets(
+        'Espera que não seja adicionada nenhuma tarefa quando a largura do text for maior que 80',
+        (WidgetTester tester) async {
+      final tarefaForm = TarefaForm();
+
+      final provider = MockTarefasProvider();
+      when(provider.tarefas).thenReturn([]);
+
+      int larguraAntiga = provider.tarefas.length;
+
+      tarefaForm.adicionarItem(provider: provider, text: 'a' * 81);
+
+      expect(larguraAntiga, provider.tarefas.length);
+    });
   });
 
   group('TarefaItem', () {
@@ -239,6 +253,7 @@ void main() {
     testWidgets(
         'Espera que a tarefa seja concluida quando o método concluirTarefa() for chamado, ',
         (WidgetTester tester) async {
+
       //Mock que retorna 1 tarefa
       final provider = MockTarefasProvider();
       when(provider.tarefas)
@@ -261,7 +276,31 @@ void main() {
   });
 
   //Testes de Integração
-  group('ListaTarefas', () {
+
+  group('TarefaLista',(){
+    testWidgets('Espera um texto dizendo que não há nenhuma tarefa cadastrada quando não houver tarefas cadastradas', (WidgetTester tester) async {
+      final provider = MockTarefasProvider();
+      when(provider.tarefas)
+          .thenReturn([]);
+      Widget app = MultiProvider(
+          providers: [
+            ChangeNotifierProvider<TarefasProvider>(
+                create: (context) => provider)
+          ],
+          child: MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            home: ListaTarefas(),
+          ));
+      await tester.pumpWidget(app);
+      expect(find.text('Não há tarefas cadastradas'),findsOneWidget);
+    });
+  });
+
+  group('TarefaForm', () {
     testWidgets(
         "Espera criar uma tarefa quando preencher o formulário e apertar o botão adicionar",
         (WidgetTester tester) async {
